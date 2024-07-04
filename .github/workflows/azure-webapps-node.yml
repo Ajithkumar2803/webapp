@@ -38,21 +38,22 @@ jobs:
           node-version: '18.x'
 
       - name: Install dependencies
-        run: npm install
+        run: yarn install
 
       - name: Run audit and fix vulnerabilities
         run: npm audit fix || true
 
       - name: Build the project
-        run: npm run build --if-present
+        run: yarn build
 
       - name: Run tests
-        run: npm run test --if-present
+        run: yarn test --if-present
 
       - name: Fix ESLint issues
         run: |
           npx eslint src --fix
           npx eslint --ext .js,.jsx,.ts,.tsx . --fix
+
       - name: Zip artifact for deployment
         run: zip release.zip ./* -r
 
@@ -83,9 +84,9 @@ jobs:
       - name: Login to Azure
         uses: azure/login@v1
         with:
-          client-id: ${{ secrets.AZUREAPPSERVICE_CLIENTID_0EA20FF62B1E45FC9B50707444DAA883 }}
-          tenant-id: ${{ secrets.AZUREAPPSERVICE_TENANTID_C114598FD40C4BB8B10D027EC765807C }}
-          subscription-id: ${{ secrets.AZUREAPPSERVICE_SUBSCRIPTIONID_FAB976308AA944CC957512552C719550 }}
+          client-id: ${{ secrets.AZUREAPPSERVICE_CLIENTID }}
+          tenant-id: ${{ secrets.AZUREAPPSERVICE_TENANTID }}
+          subscription-id: ${{ secrets.AZUREAPPSERVICE_SUBSCRIPTIONID }}
 
       - name: 'Deploy to Azure Web App'
         id: deploy-to-webapp
